@@ -46,6 +46,14 @@ export const metadata: Metadata = {
 		siteName: "MusicX",
 		locale: "en_US",
 		type: "website",
+		images: [
+			{
+				url: "/opengraph-image.png",
+				width: 1200,
+				height: 630,
+				alt: "MusicX — Hrijul's music recommendations",
+			},
+		],
 	},
 	twitter: {
 		card: "summary_large_image",
@@ -53,6 +61,7 @@ export const metadata: Metadata = {
 		description:
 			"A curated collection of music recommendations. Discover new Spotify tracks and YouTube videos.",
 		creator: "@aviusx",
+		images: ["/opengraph-image.png"],
 	},
 	icons: {
 		icon: "/icon.svg",
