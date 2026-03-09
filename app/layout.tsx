@@ -16,11 +16,48 @@ const sora = Sora({
 });
 
 export const metadata: Metadata = {
-	title: "MusicX — Hrijul's music recommendations",
+	metadataBase: new URL(
+		process.env.NEXT_PUBLIC_APP_URL ||
+			(process.env.VERCEL_URL
+				? `https://${process.env.VERCEL_URL}`
+				: "http://localhost:3000"),
+	),
+	title: {
+		template: "%s | MusicX",
+		default: "MusicX — Hrijul's music recommendations",
+	},
 	description:
-		"A curated collection of music recommendations — Spotify tracks and YouTube videos.",
+		"A curated collection of music recommendations — Spotify tracks and YouTube videos handpicked by Hrijul. Discover new music, artists, and hidden gems.",
+	keywords: [
+		"music",
+		"recommendations",
+		"spotify",
+		"youtube",
+		"playlist",
+		"artists",
+	],
+	authors: [{ name: "Hrijul", url: "https://instagram.com/aviusgx" }],
+	creator: "Hrijul",
+	openGraph: {
+		title: "MusicX — Hrijul's music recommendations",
+		description:
+			"A curated collection of music recommendations — Spotify tracks and YouTube videos handpicked by Hrijul.",
+		url: "/",
+		siteName: "MusicX",
+		locale: "en_US",
+		type: "website",
+	},
+	twitter: {
+		card: "summary_large_image",
+		title: "MusicX — Music Recommendations",
+		description:
+			"A curated collection of music recommendations. Discover new Spotify tracks and YouTube videos.",
+		creator: "@aviusx",
+	},
 	icons: {
 		icon: "/icon.svg",
+		shortcut: "/icon.svg",
+		apple: "/icon.svg",
 	},
 };
 
