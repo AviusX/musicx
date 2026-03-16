@@ -7,6 +7,8 @@ import TagFilter, { type FilterMode } from "./TagFilter";
 import MediaGrid from "./MediaGrid";
 import MusicBackground from "./MusicBackground";
 import { filterByTags } from "@/lib/filters";
+import { useAuth } from "@/lib/providers/AuthProvider";
+import { createClient } from "@/lib/supabase/client";
 import type { MediaItem, Tag } from "@/lib/types";
 
 interface HomeClientProps {
@@ -14,14 +16,27 @@ interface HomeClientProps {
 	tags: Tag[];
 }
 
-export default function HomeClient({ items, tags }: HomeClientProps) {
+export default function HomeClient({ items: initialItems, tags }: HomeClientProps) {
+	const [items, setItems] = useState(initialItems);
 	const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
 	const [filterMode, setFilterMode] = useState<FilterMode>("any");
+	const { user } = useAuth();
 
 	const filteredItems = useMemo(
 		() => filterByTags(items, selectedTags, filterMode),
 		[items, selectedTags, filterMode],
 	);
+
+	const handleDelete = useCallback(async (id: string) => {
+		const supabase = createClient();
+		const { error } = await supabase
+			.from("recommendations")
+			.delete()
+			.eq("id", id);
+		if (!error) {
+			setItems((prev) => prev.filter((item) => item.id !== id));
+		}
+	}, []);
 
 	const handleToggleTag = useCallback((tag: Tag) => {
 		setSelectedTags((prev) =>
@@ -71,7 +86,7 @@ export default function HomeClient({ items, tags }: HomeClientProps) {
 					onToggleFilterMode={handleToggleFilterMode}
 				/>
 
-				<MediaGrid items={filteredItems} />
+				<MediaGrid items={filteredItems} canDelete={!!user} onDelete={handleDelete} />
 			</main>
 		</>
 	);

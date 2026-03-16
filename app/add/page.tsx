@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/lib/providers/AuthProvider";
 import { createClient } from "@/lib/supabase/client";
 import { parseMediaUrl, fetchOembedData } from "@/lib/url-parser";
@@ -23,6 +23,9 @@ export default function AddPage() {
 	const [selectedTags, setSelectedTags] = useState<string[]>([]);
 	const [fetchingMeta, setFetchingMeta] = useState(false);
 	const [success, setSuccess] = useState(false);
+	const [showTagInput, setShowTagInput] = useState(false);
+	const [newTagName, setNewTagName] = useState("");
+	const queryClient = useQueryClient();
 
 	useEffect(() => {
 		if (!loading && !user) {
@@ -60,6 +63,31 @@ export default function AddPage() {
 			setTimeout(() => router.push("/"), 1500);
 		},
 	});
+
+	const addTagMutation = useMutation({
+		mutationFn: async (name: string) => {
+			const { error } = await supabase
+				.from("tags")
+				.insert({ name: name.trim() });
+			if (error) throw error;
+		},
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ["tags"] });
+			setNewTagName("");
+			setShowTagInput(false);
+		},
+	});
+
+	const handleAddTag = () => {
+		const trimmed = newTagName.trim();
+		if (!trimmed) return;
+		if (tags.includes(trimmed)) {
+			setNewTagName("");
+			setShowTagInput(false);
+			return;
+		}
+		addTagMutation.mutate(trimmed);
+	};
 
 	const handleUrlChange = useCallback(
 		async (value: string) => {
@@ -248,7 +276,72 @@ export default function AddPage() {
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ duration: 0.4, delay: 0.4, ease: [0.4, 0, 0.2, 1] }}
 						>
-							<label className="form-label">Tags</label>
+							<div className="form-label-row">
+								<label className="form-label">Tags</label>
+								<motion.button
+									type="button"
+									className="tag-add-btn"
+									onClick={() => setShowTagInput(!showTagInput)}
+									whileHover={{ scale: 1.1 }}
+									whileTap={{ scale: 0.9 }}
+									transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
+									aria-label="Add new tag"
+									title="Add new tag"
+								>
+									<svg
+										width="14"
+										height="14"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										strokeWidth="2.5"
+										strokeLinecap="round"
+										strokeLinejoin="round"
+									>
+										<line x1="12" y1="5" x2="12" y2="19" />
+										<line x1="5" y1="12" x2="19" y2="12" />
+									</svg>
+								</motion.button>
+							</div>
+
+							<AnimatePresence>
+								{showTagInput && (
+									<motion.div
+										className="tag-add-input-row"
+										initial={{ opacity: 0, height: 0 }}
+										animate={{ opacity: 1, height: "auto" }}
+										exit={{ opacity: 0, height: 0 }}
+										transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
+									>
+										<input
+											type="text"
+											value={newTagName}
+											onChange={(e) => setNewTagName(e.target.value)}
+											onKeyDown={(e) => {
+												if (e.key === "Enter") {
+													e.preventDefault();
+													handleAddTag();
+												}
+											}}
+											className="form-input tag-add-input"
+											placeholder="New tag name"
+											autoFocus
+										/>
+										<motion.button
+											type="button"
+											className="tag-add-confirm"
+											onClick={handleAddTag}
+											disabled={addTagMutation.isPending || !newTagName.trim()}
+											whileHover={{ scale: 1.05 }}
+											whileTap={{ scale: 0.95 }}
+											transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
+										>
+											{addTagMutation.isPending ? "..." : "Add"}
+										</motion.button>
+									</motion.div>
+								)}
+							</AnimatePresence>
+
 							<div className="form-tags">
 								{tags.map((tag: string) => (
 									<motion.button

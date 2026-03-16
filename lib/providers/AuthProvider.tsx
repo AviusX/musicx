@@ -4,6 +4,7 @@ import {
 	createContext,
 	useContext,
 	useEffect,
+	useRef,
 	useState,
 	type ReactNode,
 } from "react";
@@ -31,7 +32,8 @@ export function useAuth() {
 export function AuthProvider({ children }: { children: ReactNode }) {
 	const [user, setUser] = useState<User | null>(null);
 	const [loading, setLoading] = useState(true);
-	const supabase = createClient();
+	const supabaseRef = useRef(createClient());
+	const supabase = supabaseRef.current;
 
 	useEffect(() => {
 		supabase.auth.getUser().then(({ data: { user } }) => {
@@ -59,6 +61,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
 	const signOut = async () => {
 		await supabase.auth.signOut();
+		window.location.href = "/";
 	};
 
 	return (

@@ -6,7 +6,7 @@ import { useAuth } from "@/lib/providers/AuthProvider";
 import ThemeToggle from "./ThemeToggle";
 
 export default function Header() {
-	const { user, loading } = useAuth();
+	const { user, loading, signOut } = useAuth();
 
 	return (
 		<motion.header
@@ -60,6 +60,37 @@ export default function Header() {
 									</motion.span>
 								</Link>
 							</motion.div>
+						)}
+					</AnimatePresence>
+					<AnimatePresence>
+						{!loading && user && (
+							<motion.button
+								className="header-logout-btn"
+								onClick={signOut}
+								aria-label="Sign out"
+								title="Sign out"
+								initial={{ opacity: 0, scale: 0.8 }}
+								animate={{ opacity: 1, scale: 1 }}
+								exit={{ opacity: 0, scale: 0.8 }}
+								whileHover={{ scale: 1.08 }}
+								whileTap={{ scale: 0.92 }}
+								transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
+							>
+								<svg
+									width="18"
+									height="18"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									strokeWidth="2"
+									strokeLinecap="round"
+									strokeLinejoin="round"
+								>
+									<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+									<polyline points="16 17 21 12 16 7" />
+									<line x1="21" y1="12" x2="9" y2="12" />
+								</svg>
+							</motion.button>
 						)}
 					</AnimatePresence>
 					<ThemeToggle />

@@ -6,6 +6,8 @@ import MediaCard from "./MediaCard";
 
 interface MediaGridProps {
 	items: MediaItem[];
+	canDelete?: boolean;
+	onDelete?: (id: string) => void;
 }
 
 const containerVariants = {
@@ -18,7 +20,7 @@ const containerVariants = {
 	},
 };
 
-export default function MediaGrid({ items }: MediaGridProps) {
+export default function MediaGrid({ items, canDelete, onDelete }: MediaGridProps) {
 	return (
 		<motion.div
 			className="media-grid"
@@ -29,7 +31,7 @@ export default function MediaGrid({ items }: MediaGridProps) {
 		>
 			<AnimatePresence mode="popLayout">
 				{items.map((item) => (
-					<MediaCard key={item.id} item={item} />
+					<MediaCard key={item.id} item={item} canDelete={canDelete} onDelete={onDelete} />
 				))}
 			</AnimatePresence>
 			<AnimatePresence>

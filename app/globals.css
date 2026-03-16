@@ -953,6 +953,189 @@ body::after {
 	box-shadow: 0 2px 12px var(--accent-glow) !important;
 }
 
+/* ─── Logout Button ─── */
+
+.header-logout-btn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 40px;
+	height: 40px;
+	border-radius: 12px;
+	border: 1px solid var(--border-color);
+	background: transparent;
+	color: var(--text-secondary);
+	cursor: pointer;
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.header-logout-btn:hover {
+	background: rgba(239, 68, 68, 0.08);
+	color: #ef4444;
+	border-color: rgba(239, 68, 68, 0.3);
+	box-shadow: 0 0 16px rgba(239, 68, 68, 0.12);
+}
+
+/* ─── Delete Button on Cards ─── */
+
+.delete-btn {
+	margin-left: auto;
+}
+
+.delete-btn:hover {
+	background: rgba(239, 68, 68, 0.1) !important;
+	color: #ef4444 !important;
+}
+
+/* ─── Delete Modal ─── */
+
+.delete-modal-overlay {
+	position: fixed;
+	inset: 0;
+	z-index: 200;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: rgba(0, 0, 0, 0.5);
+	backdrop-filter: blur(8px);
+	-webkit-backdrop-filter: blur(8px);
+	padding: 1rem;
+}
+
+.delete-modal {
+	max-width: 380px;
+	width: 100%;
+	padding: 1.75rem 1.5rem;
+}
+
+.delete-modal-title {
+	font-family: var(--font-sora), system-ui, sans-serif;
+	font-size: 1.1rem;
+	font-weight: 600;
+	color: var(--text-primary);
+	margin-bottom: 0.625rem;
+	transition: color 0.5s ease;
+}
+
+.delete-modal-text {
+	font-size: 0.85rem;
+	color: var(--text-secondary);
+	line-height: 1.5;
+	margin-bottom: 1.5rem;
+	transition: color 0.5s ease;
+}
+
+.delete-modal-text strong {
+	color: var(--text-primary);
+}
+
+.delete-modal-actions {
+	display: flex;
+	gap: 0.75rem;
+	justify-content: flex-end;
+}
+
+.delete-modal-cancel {
+	padding: 0.5rem 1.125rem;
+	border-radius: 10px;
+	border: 1px solid var(--border-color);
+	background: transparent;
+	color: var(--text-secondary);
+	font-family: var(--font-dm-sans), system-ui, sans-serif;
+	font-size: 0.85rem;
+	font-weight: 500;
+	cursor: pointer;
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.delete-modal-cancel:hover {
+	border-color: var(--border-hover);
+	background: var(--bg-tertiary);
+}
+
+.delete-modal-confirm {
+	padding: 0.5rem 1.125rem;
+	border-radius: 10px;
+	border: none;
+	background: #ef4444;
+	color: #ffffff;
+	font-family: var(--font-dm-sans), system-ui, sans-serif;
+	font-size: 0.85rem;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	box-shadow: 0 2px 12px rgba(239, 68, 68, 0.2);
+}
+
+.delete-modal-confirm:hover {
+	background: #dc2626;
+	box-shadow: 0 4px 20px rgba(239, 68, 68, 0.3);
+}
+
+/* ─── Tag Add ─── */
+
+.form-label-row {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.tag-add-btn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 24px;
+	height: 24px;
+	border-radius: 50%;
+	border: 1px solid var(--border-color);
+	background: transparent;
+	color: var(--text-muted);
+	cursor: pointer;
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tag-add-btn:hover {
+	border-color: var(--accent);
+	color: var(--accent);
+	background: var(--accent-soft);
+}
+
+.tag-add-input-row {
+	display: flex;
+	gap: 0.5rem;
+	overflow: hidden;
+	margin-bottom: 0.25rem;
+}
+
+.tag-add-input {
+	flex: 1;
+	padding: 0.5rem 0.75rem !important;
+	font-size: 0.82rem !important;
+}
+
+.tag-add-confirm {
+	padding: 0.5rem 0.875rem;
+	border-radius: 10px;
+	border: none;
+	background: var(--accent);
+	color: var(--tag-active-text);
+	font-family: var(--font-dm-sans), system-ui, sans-serif;
+	font-size: 0.8rem;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	white-space: nowrap;
+}
+
+.tag-add-confirm:hover:not(:disabled) {
+	background: var(--accent-hover);
+}
+
+.tag-add-confirm:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
 /* ─── Responsive ─── */
 
 @media (max-width: 768px) {
