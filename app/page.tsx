@@ -6,15 +6,16 @@ import Header from "./components/Header";
 import TagFilter, { type FilterMode } from "./components/TagFilter";
 import MediaGrid from "./components/MediaGrid";
 import MusicBackground from "./components/MusicBackground";
-import { getRecommendations, getAllTags, filterByTags } from "@/lib/data";
+import { useRecommendations } from "@/lib/hooks/useRecommendations";
+import { getAllTags, filterByTags } from "@/lib/data";
 import type { Tag } from "@/lib/types";
 
 export default function Home() {
 	const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
 	const [filterMode, setFilterMode] = useState<FilterMode>("any");
 
-	const allItems = useMemo(() => getRecommendations(), []);
-	const allTags = useMemo(() => getAllTags(), []);
+	const { data: allItems = [], isLoading } = useRecommendations();
+	const allTags = useMemo(() => getAllTags(allItems), [allItems]);
 	const filteredItems = useMemo(
 		() => filterByTags(allItems, selectedTags, filterMode),
 		[allItems, selectedTags, filterMode],
@@ -60,15 +61,23 @@ export default function Home() {
 					</p>
 				</motion.div>
 
-				<TagFilter
-					tags={allTags}
-					selectedTags={selectedTags}
-					onToggleTag={handleToggleTag}
-					filterMode={filterMode}
-					onToggleFilterMode={handleToggleFilterMode}
-				/>
-
-				<MediaGrid items={filteredItems} />
+				{isLoading ? (
+					<div className="loading-container">
+						<div className="loading-spinner" />
+						<p className="loading-text">Loading recommendations...</p>
+					</div>
+				) : (
+					<>
+						<TagFilter
+							tags={allTags}
+							selectedTags={selectedTags}
+							onToggleTag={handleToggleTag}
+							filterMode={filterMode}
+							onToggleFilterMode={handleToggleFilterMode}
+						/>
+						<MediaGrid items={filteredItems} />
+					</>
+				)}
 			</main>
 		</>
 	);

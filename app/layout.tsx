@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { DM_Sans, Sora } from "next/font/google";
 import { ThemeProvider } from "./components/ThemeProvider";
+import Providers from "./providers";
 import "./globals.css";
 
 const dmSans = DM_Sans({
@@ -78,7 +79,9 @@ export default function RootLayout({
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<body className={`${dmSans.variable} ${sora.variable}`}>
-				<ThemeProvider>{children}</ThemeProvider>
+				<ThemeProvider>
+					<Providers>{children}</Providers>
+				</ThemeProvider>
 			</body>
 		</html>
 	);

@@ -1,13 +1,8 @@
 import type { MediaItem, Tag } from "./types";
-import recommendations from "@/data/recommendations.json";
 
-export function getRecommendations(): MediaItem[] {
-	return recommendations as MediaItem[];
-}
-
-export function getAllTags(): Tag[] {
+export function getAllTags(items: MediaItem[]): Tag[] {
 	const tags = new Set<Tag>();
-	for (const item of getRecommendations()) {
+	for (const item of items) {
 		for (const tag of item.tags) {
 			tags.add(tag);
 		}
