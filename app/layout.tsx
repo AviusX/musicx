@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { DM_Sans, Sora } from "next/font/google";
 import { ThemeProvider } from "./components/ThemeProvider";
+import { QueryProvider } from "@/lib/providers/QueryProvider";
+import { AuthProvider } from "@/lib/providers/AuthProvider";
 import "./globals.css";
 
 const dmSans = DM_Sans({
@@ -78,7 +80,11 @@ export default function RootLayout({
 	return (
 		<html lang="en" suppressHydrationWarning>
 			<body className={`${dmSans.variable} ${sora.variable}`}>
-				<ThemeProvider>{children}</ThemeProvider>
+				<ThemeProvider>
+					<QueryProvider>
+						<AuthProvider>{children}</AuthProvider>
+					</QueryProvider>
+				</ThemeProvider>
 			</body>
 		</html>
 	);

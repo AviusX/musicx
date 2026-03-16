@@ -1,32 +1,26 @@
-import type { MediaItem, Tag } from "./types";
-import recommendations from "@/data/recommendations.json";
+import { createClient } from "@/lib/supabase/server";
+import type { DbRecommendation, MediaItem, Tag } from "./types";
+import { mapDbToMediaItem } from "./types";
 
-export function getRecommendations(): MediaItem[] {
-	return recommendations as MediaItem[];
+export async function getRecommendations(): Promise<MediaItem[]> {
+	const supabase = await createClient();
+	const { data, error } = await supabase
+		.from("recommendations")
+		.select("*")
+		.order("created_at", { ascending: false });
+
+	if (error) throw error;
+	return (data as DbRecommendation[]).map(mapDbToMediaItem);
 }
 
-export function getAllTags(): Tag[] {
-	const tags = new Set<Tag>();
-	for (const item of getRecommendations()) {
-		for (const tag of item.tags) {
-			tags.add(tag);
-		}
-	}
-	return Array.from(tags).sort();
+export async function getAllTags(): Promise<Tag[]> {
+	const supabase = await createClient();
+	const { data, error } = await supabase
+		.from("tags")
+		.select("name")
+		.order("name");
+
+	if (error) throw error;
+	return data.map((t: { name: string }) => t.name);
 }
 
-export function filterByTags(
-	items: MediaItem[],
-	selectedTags: Tag[],
-	mode: "any" | "all" = "any",
-): MediaItem[] {
-	if (selectedTags.length === 0) return items;
-	if (mode === "all") {
-		return items.filter((item) =>
-			selectedTags.every((tag) => item.tags.includes(tag)),
-		);
-	}
-	return items.filter((item) =>
-		selectedTags.some((tag) => item.tags.includes(tag)),
-	);
-}
