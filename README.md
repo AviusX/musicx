@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# musicx
 
-## Getting Started
+Hrijul's Sound Archive — a curated catalog of music recommendations, live at [music.aviusx.dev](https://music.aviusx.dev).
 
-First, run the development server:
+Built as the expressive sibling of [aviusx.dev](https://aviusx.dev): same design DNA (cream/charcoal themes, orange accent, hairline borders), turned up with gig-poster type, a WebGL soundwave hero, and rhythmic motion.
+
+## Stack
+
+- **Next.js 16** (App Router, fully static with on-demand revalidation)
+- **Supabase** — Postgres + Auth; recommendations and tags with normalized join table, RLS-enforced owner-only writes
+- **Tailwind CSS 4** with custom design tokens
+- **GSAP + Lenis** on a single shared ticker; **OGL** for the hero shader
+- **Bun** as the package manager
+
+## Development
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
+bun install
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Requires `.env.local` with:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+NEXT_PUBLIC_SUPABASE_URL=…
+NEXT_PUBLIC_SUPABASE_ANON_KEY=…
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Both values are Supabase publishable credentials (safe to expose; security is enforced by Row Level Security).
 
-## Learn More
+## Scripts
 
-To learn more about Next.js, take a look at the following resources:
+| Command                | Purpose                    |
+| ---------------------- | -------------------------- |
+| `bun dev`              | Dev server (Turbopack)     |
+| `bun run build`        | Production build           |
+| `bun run start`        | Serve the production build |
+| `bun run lint`         | ESLint                     |
+| `bun run format`       | Prettier (write)           |
+| `bun run format:check` | Prettier (check)           |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Architecture notes
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- The home page is statically rendered; all data comes from Supabase via an anon (cookie-free) client so it stays static. Mutations are Server Actions that call `revalidatePath("/")`.
+- Auth is email/password sign-in only (`/login`). Signups are blocked at the database level; writes require the owner's email via RLS policies.
+- Admin UI (add/edit/delete recommendations, tag CRUD) appears inline on the public page after sign-in. Pasting a YouTube/Spotify link autofills the form via oEmbed.
+- WebGL, smooth scrolling, and all animations bail out under `prefers-reduced-motion`.
