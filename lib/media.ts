@@ -27,7 +27,11 @@ export function parseMediaLink(raw: string): ParsedMediaLink | null {
 		return isYouTubeId(id) ? youtube(id) : null;
 	}
 
-	if (host === "youtube.com" || host === "m.youtube.com" || host === "music.youtube.com") {
+	if (
+		host === "youtube.com" ||
+		host === "m.youtube.com" ||
+		host === "music.youtube.com"
+	) {
 		const v = url.searchParams.get("v");
 		if (v && isYouTubeId(v)) return youtube(v);
 		const shorts = url.pathname.match(/^\/(?:shorts|embed|live)\/([\w-]{11})/);
@@ -63,6 +67,9 @@ function youtube(id: string): ParsedMediaLink {
 	};
 }
 
-export function youtubeThumbnail(embedId: string, quality: "hq" | "mq" | "sd" = "hq"): string {
+export function youtubeThumbnail(
+	embedId: string,
+	quality: "hq" | "mq" | "sd" = "hq",
+): string {
 	return `https://img.youtube.com/vi/${embedId}/${quality}default.jpg`;
 }

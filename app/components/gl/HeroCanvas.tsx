@@ -3,7 +3,13 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { Renderer, Program, Mesh, Triangle } from "ogl";
-import { cssColor, onThemeChange, GL_NOISE, GL_VERTEX, type RGB } from "@/lib/gl";
+import {
+	cssColor,
+	onThemeChange,
+	GL_NOISE,
+	GL_VERTEX,
+	type RGB,
+} from "@/lib/gl";
 
 /**
  * Soundwave interference field: horizontal "strings" displaced by

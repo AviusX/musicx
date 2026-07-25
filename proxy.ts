@@ -33,5 +33,7 @@ export default async function proxy(request: NextRequest) {
 
 export const config = {
 	// Only run where a session may matter; skip static assets entirely.
-	matcher: ["/((?!_next/static|_next/image|favicon.ico|icon.svg|.*\\.(?:png|jpg|jpeg|svg|webp|ico)$).*)"],
+	matcher: [
+		"/((?!_next/static|_next/image|favicon.ico|icon.svg|.*\\.(?:png|jpg|jpeg|svg|webp|ico)$).*)",
+	],
 };

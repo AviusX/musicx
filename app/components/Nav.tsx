@@ -50,7 +50,10 @@ export default function Nav() {
 				aria-label="Main"
 				className="mx-auto flex h-16 max-w-[110rem] items-center justify-between px-5 sm:px-8"
 			>
-				<a href="#top" className="display text-xl tracking-tight text-foreground">
+				<a
+					href="#top"
+					className="display text-xl tracking-tight text-foreground"
+				>
 					music<span className="text-accent">x</span>
 				</a>
 

@@ -20,7 +20,10 @@ async function requireOwner() {
 }
 
 function toError(e: unknown): { ok: false; error: string } {
-	return { ok: false, error: e instanceof Error ? e.message : "Something went wrong." };
+	return {
+		ok: false,
+		error: e instanceof Error ? e.message : "Something went wrong.",
+	};
 }
 
 /* ------------------------------ auth ------------------------------ */
@@ -127,7 +130,8 @@ export interface RecommendationInput {
 
 function validateInput(input: RecommendationInput): string | null {
 	if (!input.title.trim()) return "Title is required.";
-	if (!input.embedId || !input.url) return "A valid YouTube or Spotify link is required.";
+	if (!input.embedId || !input.url)
+		return "A valid YouTube or Spotify link is required.";
 	if (input.platform !== "youtube" && input.platform !== "spotify") {
 		return "Unsupported platform.";
 	}
@@ -158,12 +162,14 @@ export async function createRecommendation(
 		if (error) throw error;
 
 		if (input.tagIds.length > 0) {
-			const { error: tagError } = await supabase.from("recommendation_tags").insert(
-				input.tagIds.map((tagId) => ({
-					recommendation_id: data.id,
-					tag_id: tagId,
-				})),
-			);
+			const { error: tagError } = await supabase
+				.from("recommendation_tags")
+				.insert(
+					input.tagIds.map((tagId) => ({
+						recommendation_id: data.id,
+						tag_id: tagId,
+					})),
+				);
 			if (tagError) throw tagError;
 		}
 
@@ -203,9 +209,14 @@ export async function updateRecommendation(
 		if (clearError) throw clearError;
 
 		if (input.tagIds.length > 0) {
-			const { error: tagError } = await supabase.from("recommendation_tags").insert(
-				input.tagIds.map((tagId) => ({ recommendation_id: id, tag_id: tagId })),
-			);
+			const { error: tagError } = await supabase
+				.from("recommendation_tags")
+				.insert(
+					input.tagIds.map((tagId) => ({
+						recommendation_id: id,
+						tag_id: tagId,
+					})),
+				);
 			if (tagError) throw tagError;
 		}
 
@@ -219,7 +230,10 @@ export async function updateRecommendation(
 export async function deleteRecommendation(id: string): Promise<ActionResult> {
 	try {
 		const { supabase } = await requireOwner();
-		const { error } = await supabase.from("recommendations").delete().eq("id", id);
+		const { error } = await supabase
+			.from("recommendations")
+			.delete()
+			.eq("id", id);
 		if (error) throw error;
 
 		revalidatePath("/");
@@ -237,7 +251,8 @@ export async function createTag(
 	try {
 		const trimmed = name.trim();
 		if (!trimmed) return { ok: false, error: "Tag name is required." };
-		if (trimmed.length > 32) return { ok: false, error: "Tag name is too long." };
+		if (trimmed.length > 32)
+			return { ok: false, error: "Tag name is too long." };
 
 		const { supabase } = await requireOwner();
 		const { data, error } = await supabase
@@ -246,7 +261,8 @@ export async function createTag(
 			.select("id, name")
 			.single();
 		if (error) {
-			if (error.code === "23505") return { ok: false, error: "Tag already exists." };
+			if (error.code === "23505")
+				return { ok: false, error: "Tag already exists." };
 			throw error;
 		}
 
@@ -257,15 +273,22 @@ export async function createTag(
 	}
 }
 
-export async function renameTag(id: string, name: string): Promise<ActionResult> {
+export async function renameTag(
+	id: string,
+	name: string,
+): Promise<ActionResult> {
 	try {
 		const trimmed = name.trim();
 		if (!trimmed) return { ok: false, error: "Tag name is required." };
 
 		const { supabase } = await requireOwner();
-		const { error } = await supabase.from("tags").update({ name: trimmed }).eq("id", id);
+		const { error } = await supabase
+			.from("tags")
+			.update({ name: trimmed })
+			.eq("id", id);
 		if (error) {
-			if (error.code === "23505") return { ok: false, error: "Tag already exists." };
+			if (error.code === "23505")
+				return { ok: false, error: "Tag already exists." };
 			throw error;
 		}
 

@@ -9,7 +9,11 @@ export function cssColor(name: string, fallback: RGB): RGB {
 	const m = raw.match(/^#([0-9a-f]{6})$/i);
 	if (!m) return fallback;
 	const int = parseInt(m[1], 16);
-	return [((int >> 16) & 255) / 255, ((int >> 8) & 255) / 255, (int & 255) / 255];
+	return [
+		((int >> 16) & 255) / 255,
+		((int >> 8) & 255) / 255,
+		(int & 255) / 255,
+	];
 }
 
 /** Watch <html> class changes (theme toggles) and re-read theme colors. */

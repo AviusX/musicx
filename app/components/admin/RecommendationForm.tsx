@@ -1,12 +1,6 @@
 "use client";
 
-import {
-	useCallback,
-	useEffect,
-	useRef,
-	useState,
-	useTransition,
-} from "react";
+import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import Modal from "../Modal";
 import {
 	createRecommendation,
@@ -89,7 +83,8 @@ export default function RecommendationForm({
 		return () => clearTimeout(handle);
 	}, [link]);
 
-	const linkInvalid = link.trim() !== "" && parseMediaLink(link) === null && !embedId;
+	const linkInvalid =
+		link.trim() !== "" && parseMediaLink(link) === null && !embedId;
 
 	const toggleTag = useCallback((id: string) => {
 		setSelectedTagIds((prev) =>
@@ -106,8 +101,8 @@ export default function RecommendationForm({
 		setTagPending(false);
 		if (result.ok) {
 			setAvailableTags((prev) =>
-				[...prev.filter((t) => t.id !== result.tag.id), result.tag].sort((a, b) =>
-					a.name.localeCompare(b.name),
+				[...prev.filter((t) => t.id !== result.tag.id), result.tag].sort(
+					(a, b) => a.name.localeCompare(b.name),
 				),
 			);
 			setSelectedTagIds((prev) => [...prev, result.tag.id]);
@@ -144,7 +139,16 @@ export default function RecommendationForm({
 				}
 			});
 		},
-		[artist, canonicalUrl, embedId, initial, onSaved, platform, selectedTagIds, title],
+		[
+			artist,
+			canonicalUrl,
+			embedId,
+			initial,
+			onSaved,
+			platform,
+			selectedTagIds,
+			title,
+		],
 	);
 
 	return (
@@ -195,10 +199,36 @@ export default function RecommendationForm({
 							/>
 						) : (
 							<span className="absolute inset-0 flex items-center justify-center">
-								<svg className="h-8 w-8 text-line" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-									<path d="M9 18V5l12-2v13" strokeWidth={1.5} stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-									<circle cx="6" cy="18" r="3" fill="none" stroke="currentColor" strokeWidth={1.5} />
-									<circle cx="18" cy="16" r="3" fill="none" stroke="currentColor" strokeWidth={1.5} />
+								<svg
+									className="h-8 w-8 text-line"
+									viewBox="0 0 24 24"
+									fill="currentColor"
+									aria-hidden
+								>
+									<path
+										d="M9 18V5l12-2v13"
+										strokeWidth={1.5}
+										stroke="currentColor"
+										fill="none"
+										strokeLinecap="round"
+										strokeLinejoin="round"
+									/>
+									<circle
+										cx="6"
+										cy="18"
+										r="3"
+										fill="none"
+										stroke="currentColor"
+										strokeWidth={1.5}
+									/>
+									<circle
+										cx="18"
+										cy="16"
+										r="3"
+										fill="none"
+										stroke="currentColor"
+										strokeWidth={1.5}
+									/>
 								</svg>
 							</span>
 						)}
@@ -283,7 +313,10 @@ export default function RecommendationForm({
 				</div>
 
 				{error && (
-					<p className="border border-accent/40 bg-accent/5 px-4 py-2.5 text-sm text-accent" role="alert">
+					<p
+						className="border border-accent/40 bg-accent/5 px-4 py-2.5 text-sm text-accent"
+						role="alert"
+					>
 						{error}
 					</p>
 				)}
@@ -301,7 +334,11 @@ export default function RecommendationForm({
 						disabled={isPending}
 						className="inline-flex h-11 items-center gap-2 bg-foreground px-6 text-sm font-medium text-background transition-colors duration-300 hover:bg-accent hover:text-accent-ink disabled:opacity-50"
 					>
-						{isPending ? "Saving…" : initial ? "Save changes" : "Add to archive"}
+						{isPending
+							? "Saving…"
+							: initial
+								? "Save changes"
+								: "Add to archive"}
 					</button>
 				</div>
 			</form>

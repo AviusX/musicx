@@ -90,7 +90,11 @@ export default function Catalog({ recommendations, tags }: CatalogProps) {
 	}, [router]);
 
 	return (
-		<section id="catalog" aria-label="Music recommendations" className="border-t border-line">
+		<section
+			id="catalog"
+			aria-label="Music recommendations"
+			className="border-t border-line"
+		>
 			<h2 className="sr-only">The Archive</h2>
 			<TagFilter
 				tags={tags}
@@ -155,8 +159,18 @@ export default function Catalog({ recommendations, tags }: CatalogProps) {
 					onClick={handleAdd}
 					className="fixed bottom-6 right-6 z-50 inline-flex h-13 items-center gap-2 bg-accent px-6 text-sm font-semibold text-accent-ink shadow-xl transition-transform duration-300 hover:scale-105"
 				>
-					<svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-						<path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+					<svg
+						className="h-4 w-4"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke="currentColor"
+						strokeWidth={2.5}
+					>
+						<path
+							strokeLinecap="round"
+							strokeLinejoin="round"
+							d="M12 4.5v15m7.5-7.5h-15"
+						/>
 					</svg>
 					Add track
 				</button>

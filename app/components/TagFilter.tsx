@@ -34,7 +34,11 @@ export default function TagFilter({
 					Filter<span className="text-accent"> /</span> vibe
 				</span>
 
-				<div className="flex flex-wrap items-center gap-2" role="group" aria-label="Filter by tag">
+				<div
+					className="flex flex-wrap items-center gap-2"
+					role="group"
+					aria-label="Filter by tag"
+				>
 					{tags.map((tag) => {
 						const active = selectedIds.includes(tag.id);
 						return (
@@ -97,7 +101,9 @@ export default function TagFilter({
 
 					<span className="label tabular-nums" aria-live="polite">
 						{String(matchCount).padStart(2, "0")}{" "}
-						<span className="text-accent">rec{matchCount === 1 ? "" : "s"}</span>
+						<span className="text-accent">
+							rec{matchCount === 1 ? "" : "s"}
+						</span>
 					</span>
 				</div>
 			</div>

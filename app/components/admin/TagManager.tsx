@@ -103,7 +103,11 @@ function TagRow({
 	);
 }
 
-export default function TagManager({ tags, onClose, onChanged }: TagManagerProps) {
+export default function TagManager({
+	tags,
+	onClose,
+	onChanged,
+}: TagManagerProps) {
 	const [newName, setNewName] = useState("");
 	const [busy, setBusy] = useState(false);
 	const [error, setError] = useState<string | null>(null);
@@ -157,14 +161,22 @@ export default function TagManager({ tags, onClose, onChanged }: TagManagerProps
 				</div>
 
 				{error && (
-					<p className="border border-accent/40 bg-accent/5 px-4 py-2.5 text-sm text-accent" role="alert">
+					<p
+						className="border border-accent/40 bg-accent/5 px-4 py-2.5 text-sm text-accent"
+						role="alert"
+					>
 						{error}
 					</p>
 				)}
 
 				<ul className="flex flex-col gap-2">
 					{tags.map((tag) => (
-						<TagRow key={tag.id} tag={tag} onChanged={onChanged} setError={setError} />
+						<TagRow
+							key={tag.id}
+							tag={tag}
+							onChanged={onChanged}
+							setError={setError}
+						/>
 					))}
 					{tags.length === 0 && (
 						<li className="label py-4 text-center">No tags yet</li>

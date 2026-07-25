@@ -17,7 +17,9 @@ function Row({
 }) {
 	return (
 		<div className="overflow-hidden">
-			<div className={`${trackClass} flex w-max items-center will-change-transform`}>
+			<div
+				className={`${trackClass} flex w-max items-center will-change-transform`}
+			>
 				{[0, 1].map((copy) => (
 					<div
 						key={copy}

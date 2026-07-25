@@ -48,12 +48,42 @@ function Vinyl({ delay }: { delay: number }) {
 					className="vinyl-spin inline-block h-[0.74em] w-[0.74em] translate-y-[0.075em]"
 				>
 					<circle cx="50" cy="50" r="48" fill="currentColor" />
-					<circle cx="50" cy="50" r="38" fill="none" stroke="var(--background)" strokeOpacity="0.35" strokeWidth="1.5" />
-					<circle cx="50" cy="50" r="31" fill="none" stroke="var(--background)" strokeOpacity="0.35" strokeWidth="1.5" />
-					<circle cx="50" cy="50" r="24" fill="none" stroke="var(--background)" strokeOpacity="0.35" strokeWidth="1.5" />
+					<circle
+						cx="50"
+						cy="50"
+						r="38"
+						fill="none"
+						stroke="var(--background)"
+						strokeOpacity="0.35"
+						strokeWidth="1.5"
+					/>
+					<circle
+						cx="50"
+						cy="50"
+						r="31"
+						fill="none"
+						stroke="var(--background)"
+						strokeOpacity="0.35"
+						strokeWidth="1.5"
+					/>
+					<circle
+						cx="50"
+						cy="50"
+						r="24"
+						fill="none"
+						stroke="var(--background)"
+						strokeOpacity="0.35"
+						strokeWidth="1.5"
+					/>
 					<circle cx="50" cy="50" r="16" fill="var(--accent)" />
 					<circle cx="50" cy="50" r="3.5" fill="var(--background)" />
-					<circle cx="63" cy="42" r="2.2" fill="var(--accent-ink)" opacity="0.85" />
+					<circle
+						cx="63"
+						cy="42"
+						r="2.2"
+						fill="var(--accent-ink)"
+						opacity="0.85"
+					/>
 				</svg>
 			</span>
 		</span>
@@ -86,9 +116,22 @@ export default function Hero({ trackCount }: { trackCount: number }) {
 				end: "bottom top",
 				scrub: 0.6,
 			};
-			gsap.to(line1Ref.current, { xPercent: -6, ease: "none", scrollTrigger: scrub });
-			gsap.to(line2Ref.current, { xPercent: 6, ease: "none", scrollTrigger: scrub });
-			gsap.to(bottomRef.current, { yPercent: 30, opacity: 0, ease: "none", scrollTrigger: scrub });
+			gsap.to(line1Ref.current, {
+				xPercent: -6,
+				ease: "none",
+				scrollTrigger: scrub,
+			});
+			gsap.to(line2Ref.current, {
+				xPercent: 6,
+				ease: "none",
+				scrollTrigger: scrub,
+			});
+			gsap.to(bottomRef.current, {
+				yPercent: 30,
+				opacity: 0,
+				ease: "none",
+				scrollTrigger: scrub,
+			});
 		}, sectionRef);
 
 		return () => {
@@ -119,7 +162,9 @@ export default function Hero({ trackCount }: { trackCount: number }) {
 				{/* Kinetic title */}
 				<div className="my-10">
 					<h1 className="display select-none text-foreground">
-						<span className="sr-only">Sound Archive — music recommendations by Hrijul</span>
+						<span className="sr-only">
+							Sound Archive — music recommendations by Hrijul
+						</span>
 						<span
 							ref={line1Ref}
 							aria-hidden
@@ -186,7 +231,11 @@ export default function Hero({ trackCount }: { trackCount: number }) {
 									stroke="currentColor"
 									strokeWidth={2}
 								>
-									<path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5L12 21m0 0l-7.5-7.5M12 21V3" />
+									<path
+										strokeLinecap="round"
+										strokeLinejoin="round"
+										d="M19.5 13.5L12 21m0 0l-7.5-7.5M12 21V3"
+									/>
 								</svg>
 							</a>
 						</div>
@@ -215,8 +264,18 @@ export default function Hero({ trackCount }: { trackCount: number }) {
 			>
 				<div className="scroll-nudge flex flex-col items-center gap-1.5">
 					<span className="label !text-[0.55rem]">Scroll</span>
-					<svg className="h-3.5 w-3.5 text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-						<path strokeLinecap="round" strokeLinejoin="round" d="M19.5 13.5L12 21m0 0l-7.5-7.5M12 21V3" />
+					<svg
+						className="h-3.5 w-3.5 text-muted"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke="currentColor"
+						strokeWidth={1.5}
+					>
+						<path
+							strokeLinecap="round"
+							strokeLinejoin="round"
+							d="M19.5 13.5L12 21m0 0l-7.5-7.5M12 21V3"
+						/>
 					</svg>
 				</div>
 			</div>
