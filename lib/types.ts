@@ -1,13 +1,21 @@
 export type MediaPlatform = "spotify" | "youtube";
 
-export type Tag = "AMV" | "Chill" | "Guitar" | "Sad" | "Acoustic";
+export interface Tag {
+	id: string;
+	name: string;
+}
 
-export interface MediaItem {
+export interface Recommendation {
 	id: string;
 	title: string;
 	artist: string;
 	url: string;
 	platform: MediaPlatform;
+	embedId: string;
+	createdAt: string;
 	tags: Tag[];
-	embedId: string; // Spotify track ID or YouTube video ID
 }
+
+export type FilterMode = "any" | "all";
+
+export const OWNER_EMAIL = "aviusanima@gmail.com";

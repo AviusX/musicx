@@ -1,94 +1,106 @@
 "use client";
 
-import { motion } from "motion/react";
-import type { Tag } from "@/lib/types";
-
-export type FilterMode = "any" | "all";
+import type { FilterMode, Tag } from "@/lib/types";
 
 interface TagFilterProps {
 	tags: Tag[];
-	selectedTags: Tag[];
-	onToggleTag: (tag: Tag) => void;
-	filterMode: FilterMode;
-	onToggleFilterMode: () => void;
+	selectedIds: string[];
+	onToggle: (id: string) => void;
+	onClear: () => void;
+	mode: FilterMode;
+	onToggleMode: () => void;
+	matchCount: number;
+	isOwner: boolean;
+	onManageTags: () => void;
 }
 
 export default function TagFilter({
 	tags,
-	selectedTags,
-	onToggleTag,
-	filterMode,
-	onToggleFilterMode,
+	selectedIds,
+	onToggle,
+	onClear,
+	mode,
+	onToggleMode,
+	matchCount,
+	isOwner,
+	onManageTags,
 }: TagFilterProps) {
-	const hasSelection = selectedTags.length > 1;
+	const hasSelection = selectedIds.length > 0;
 
 	return (
-		<motion.div
-			className="tag-filter-section"
-			initial={{ opacity: 0, y: 10 }}
-			animate={{ opacity: 1, y: 0 }}
-			transition={{ duration: 0.5, delay: 0.2, ease: [0.4, 0, 0.2, 1] }}
-		>
-			<div className="tag-filter-container">
-				{tags.map((tag) => {
-					const isActive = selectedTags.includes(tag);
-					return (
-						<motion.button
-							key={tag}
-							onClick={() => onToggleTag(tag)}
-							className={`tag-pill ${isActive ? "tag-pill-active" : ""}`}
-							whileHover={{ scale: 1.08, y: -2 }}
-							whileTap={{ scale: 0.9 }}
-							layout
-							transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
-						>
-							<motion.span
-								className="tag-pill-label"
-								animate={{ fontWeight: isActive ? 600 : 500 }}
-							>
-								{tag}
-							</motion.span>
-						</motion.button>
-					);
-				})}
-			</div>
+		<div className="sticky top-16 z-40 border-b border-line bg-background/85 py-4 backdrop-blur-md">
+			<div className="mx-auto flex max-w-[110rem] flex-wrap items-center gap-x-6 gap-y-3 px-5 sm:px-8">
+				<span className="label shrink-0">
+					Filter<span className="text-accent"> /</span> vibe
+				</span>
 
-			{hasSelection && (
-				<motion.div
-					className="filter-mode-toggle"
-					initial={{ opacity: 0, height: 0, y: -8 }}
-					animate={{ opacity: 1, height: "auto", y: 0 }}
-					exit={{ opacity: 0, height: 0, y: -8 }}
-					transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-				>
-					<span className="filter-mode-label">Show tracks that match:</span>
-					<motion.button
-						className="filter-mode-btn"
-						onClick={onToggleFilterMode}
-						whileHover={{ scale: 1.05 }}
-						whileTap={{ scale: 0.92 }}
-						transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
-						aria-label={`Currently showing tracks matching ${filterMode === "any" ? "any of the selected tags" : "all selected tags"}. Click to toggle.`}
-					>
-						<motion.span
-							className="filter-mode-indicator"
-							layout
-							transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
+				<div className="flex flex-wrap items-center gap-2" role="group" aria-label="Filter by tag">
+					{tags.map((tag) => {
+						const active = selectedIds.includes(tag.id);
+						return (
+							<button
+								key={tag.id}
+								type="button"
+								onClick={() => onToggle(tag.id)}
+								aria-pressed={active}
+								className={`border px-3.5 py-1.5 font-mono text-[0.7rem] uppercase tracking-[0.14em] transition-colors duration-200 ${
+									active
+										? "border-accent bg-accent text-accent-ink"
+										: "border-line text-muted hover:border-foreground/50 hover:text-foreground"
+								}`}
+							>
+								{tag.name}
+							</button>
+						);
+					})}
+
+					{isOwner && (
+						<button
+							type="button"
+							onClick={onManageTags}
+							className="border border-dashed border-line px-3.5 py-1.5 font-mono text-[0.7rem] uppercase tracking-[0.14em] text-muted transition-colors hover:border-accent hover:text-accent"
 						>
-							<span
-								className={`filter-mode-option ${filterMode === "any" ? "filter-mode-option-active" : ""}`}
-							>
-								Any of these
+							+ Manage
+						</button>
+					)}
+				</div>
+
+				<div className="ml-auto flex items-center gap-4">
+					{selectedIds.length >= 2 && (
+						<button
+							type="button"
+							onClick={onToggleMode}
+							aria-label={`Matching ${mode === "any" ? "any" : "all"} selected tags — click to switch`}
+							className="group flex items-center gap-2 font-mono text-[0.7rem] uppercase tracking-[0.14em] text-muted transition-colors hover:text-foreground"
+						>
+							<span className={mode === "any" ? "text-accent" : ""}>Any</span>
+							<span className="relative h-4 w-8 border border-line">
+								<span
+									className={`absolute top-0.5 h-2.5 w-2.5 bg-accent transition-all duration-300 ${
+										mode === "any" ? "left-0.5" : "left-[1.05rem]"
+									}`}
+								/>
 							</span>
-							<span
-								className={`filter-mode-option ${filterMode === "all" ? "filter-mode-option-active" : ""}`}
-							>
-								All of these
-							</span>
-						</motion.span>
-					</motion.button>
-				</motion.div>
-			)}
-		</motion.div>
+							<span className={mode === "all" ? "text-accent" : ""}>All</span>
+						</button>
+					)}
+
+					{hasSelection && (
+						<button
+							type="button"
+							onClick={onClear}
+							className="label !text-muted underline-offset-4 transition-colors hover:!text-accent hover:underline"
+						>
+							Clear
+						</button>
+					)}
+
+					<span className="label tabular-nums" aria-live="polite">
+						{String(matchCount).padStart(2, "0")}{" "}
+						<span className="text-accent">rec{matchCount === 1 ? "" : "s"}</span>
+					</span>
+				</div>
+			</div>
+		</div>
 	);
 }

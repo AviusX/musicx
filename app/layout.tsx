@@ -1,74 +1,104 @@
-import type { Metadata } from "next";
-import { DM_Sans, Sora } from "next/font/google";
-import { ThemeProvider } from "./components/ThemeProvider";
+import type { Metadata, Viewport } from "next";
+import { Anton, Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
 import "./globals.css";
 
-const dmSans = DM_Sans({
-	variable: "--font-dm-sans",
+const geistSans = Geist({
+	variable: "--font-geist-sans",
 	subsets: ["latin"],
-	weight: ["400", "500", "600"],
+	display: "swap",
 });
 
-const sora = Sora({
-	variable: "--font-sora",
+const geistMono = Geist_Mono({
+	variable: "--font-geist-mono",
 	subsets: ["latin"],
-	weight: ["600", "700"],
+	display: "swap",
 });
+
+const anton = Anton({
+	variable: "--font-anton",
+	subsets: ["latin"],
+	weight: "400",
+	display: "swap",
+});
+
+const instrumentSerif = Instrument_Serif({
+	variable: "--font-instrument-serif",
+	subsets: ["latin"],
+	weight: "400",
+	style: ["normal", "italic"],
+	display: "swap",
+});
+
+const siteUrl = "https://music.aviusx.dev";
+const title = "musicx — Hrijul's Sound Archive";
+const description =
+	"A hand-picked archive of music worth your ears — tracks, videos, and hidden gems curated by Hrijul (AviusX). Filter by vibe, press play, stay a while.";
 
 export const metadata: Metadata = {
-	metadataBase: new URL(
-		process.env.NEXT_PUBLIC_APP_URL ||
-			(process.env.VERCEL_URL
-				? `https://${process.env.VERCEL_URL}`
-				: "http://localhost:3000"),
-	),
+	metadataBase: new URL(siteUrl),
 	title: {
-		template: "%s | MusicX",
-		default: "MusicX — Hrijul's music recommendations",
+		template: "%s | musicx",
+		default: title,
 	},
-	description:
-		"A curated collection of music recommendations — Spotify tracks and YouTube videos handpicked by Hrijul. Discover new music, artists, and hidden gems.",
+	description,
 	keywords: [
 		"music",
 		"recommendations",
+		"curated music",
+		"playlist",
+		"Hrijul",
+		"AviusX",
 		"spotify",
 		"youtube",
-		"playlist",
-		"artists",
 	],
-	authors: [{ name: "Hrijul", url: "https://instagram.com/aviusgx" }],
-	creator: "Hrijul",
+	authors: [{ name: "Hrijul Bhatnagar", url: "https://aviusx.dev" }],
+	creator: "Hrijul Bhatnagar",
+	alternates: {
+		canonical: siteUrl,
+	},
 	openGraph: {
-		title: "MusicX — Hrijul's music recommendations",
-		description:
-			"A curated collection of music recommendations — Spotify tracks and YouTube videos handpicked by Hrijul.",
-		url: "/",
-		siteName: "MusicX",
+		title,
+		description,
+		url: siteUrl,
+		siteName: "musicx",
 		locale: "en_US",
 		type: "website",
-		images: [
-			{
-				url: "/opengraph-image.png",
-				width: 1200,
-				height: 630,
-				alt: "MusicX — Hrijul's music recommendations",
-			},
-		],
 	},
 	twitter: {
 		card: "summary_large_image",
-		title: "MusicX — Music Recommendations",
-		description:
-			"A curated collection of music recommendations. Discover new Spotify tracks and YouTube videos.",
-		creator: "@aviusx",
-		images: ["/opengraph-image.png"],
+		title,
+		description,
+		creator: "@AviusX",
 	},
-	icons: {
-		icon: "/icon.svg",
-		shortcut: "/icon.svg",
-		apple: "/icon.svg",
+	robots: {
+		index: true,
+		follow: true,
 	},
 };
+
+export const viewport: Viewport = {
+	themeColor: [
+		{ media: "(prefers-color-scheme: light)", color: "#f2f0e9" },
+		{ media: "(prefers-color-scheme: dark)", color: "#0d0c0a" },
+	],
+};
+
+const websiteJsonLd = {
+	"@context": "https://schema.org",
+	"@type": "WebSite",
+	"@id": `${siteUrl}/#website`,
+	url: siteUrl,
+	name: "musicx",
+	description,
+	author: {
+		"@type": "Person",
+		name: "Hrijul Bhatnagar",
+		alternateName: "AviusX",
+		url: "https://aviusx.dev",
+	},
+};
+
+const themeScript = `(function(){try{var t=localStorage.getItem("theme");var d=t?t==="dark":window.matchMedia("(prefers-color-scheme: dark)").matches;document.documentElement.classList.toggle("dark",d)}catch(e){}})();`;
 
 export default function RootLayout({
 	children,
@@ -76,10 +106,19 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en" suppressHydrationWarning>
-			<body className={`${dmSans.variable} ${sora.variable}`}>
-				<ThemeProvider>{children}</ThemeProvider>
-			</body>
+		<html
+			lang="en"
+			suppressHydrationWarning
+			className={`${geistSans.variable} ${geistMono.variable} ${anton.variable} ${instrumentSerif.variable} antialiased`}
+		>
+			<head>
+				<script dangerouslySetInnerHTML={{ __html: themeScript }} />
+				<script
+					type="application/ld+json"
+					dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+				/>
+			</head>
+			<body className="noise min-h-screen">{children}</body>
 		</html>
 	);
 }
